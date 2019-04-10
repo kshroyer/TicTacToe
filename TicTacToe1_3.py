@@ -1,16 +1,18 @@
- #3.6.3
-
+#------------------------------------
+# Basic Terminal Tic Tac Toe
+#------------------------------------
+# This program allows two players to play tic tac toe in the terminal
 
 # define variables
 #------------------------------------
-endGame = False    #bool
-player = "X"     #String
-spacing = ""
-board = [
+endGame = False             #boolean for checking if the game should end
+player = "X"                #String to represent who's turn it is "X" or "O"
+spacing = ""                #spacing variable to help make the output pretty
+board = [                   
         ["_","_","_"],
         ["_","_","_"],
-        ["_","_","_"]]
-n = 1
+        ["_","_","_"]]      #2D array representing the board
+n = 1                       #turn number
 
 # define functions
 #------------------------------------
@@ -22,9 +24,8 @@ def printBoard(b):
         for c in r:
             print(c, end = " ")
         print("   ||")
-    print("\n") 
 
-# check if x and y are both 
+# check if x and y (coordinates from user) are  
 #      integers 
 #      between 0 and 2 
 #      spot is not already taken
@@ -35,12 +36,13 @@ def isValid(x, y, b):
     if x.isdigit() and y.isdigit():
         x = int(x)
         y = int(y)
-
+        
+        # check if between 0 and 2 inclusive 
         if x>=0 and x<3 and y>=0 and y<3: 
             if b[y][x] == "_":
                 return True
             else:
-                print("\t\t\tERROR: That spot it taken")
+                print("\t\t\tERROR: That spot, it taken")
                 return False
         else:
             print("\t\t\tERROR: Input must be and integer between 0 and 2")
@@ -49,6 +51,7 @@ def isValid(x, y, b):
         print("\t\t\tERROR: Input must be and integer between 0 and 2")
         return False
 
+# switch from current player to other player and change spacing for output
 def switchPlayer(p,s):
     if p == "X": 
         p = "O"
@@ -58,7 +61,7 @@ def switchPlayer(p,s):
         s = ""
     return (p,s)
 
-# brute force method
+# brute force method for checking if someone has won
 def isWinnerBruteForce(b, p):
     #check 8 condition 3 rows, 3 columns and 2 diagonals
     w = [p == b[0][0] == b[0][1] == b[0][2],  
@@ -71,24 +74,16 @@ def isWinnerBruteForce(b, p):
     p == b[0][2] == b[1][1] == b[2][2]]
     return any(w)
 
-def isWinner(board, player):
-    for r in board:
-        for c in r:
-            print(c)
-
-
-
-# loop through 10 turns
+# GAME
 #--------------------------------
 # print board
 printBoard(board)
+# loop through turns untill endGame = True
 while not endGame:
     
     # begin turn and print turn number
     print("\n\t\t\t--------- Staring Turn " + str(n) + " ---------")
-
     
-
     # request position from player until a valid position is given
     valid = False
     while not valid: 
@@ -108,15 +103,17 @@ while not endGame:
     if n >= 5:
         if isWinnerBruteForce(board, player):
             endGame = True
-            print(" Player " + player + " has won")
+            print("\n\t\t\t--------- GAME OVER ---------")
+            print("\n\t\t\t Player " + player + " has won")
+
         elif n == 9:
             endGame = True
-            print("DRAW") 
+            print("\n\t\t\t--------- GAME OVER ---------")
+            print("\n\t\t\t            Draw")
     
     # end turn over
     # switch player for next turn and increment turn number 
     (player,spacing) = switchPlayer(player,spacing)
     n = n+1
     
-
 
